@@ -20,13 +20,13 @@ body {
 
 .main-image {
   grid-area: image;
-  background-image: url("https://source.unsplash.com/EwKXn5CapA4");
+  background-image: url("https://source.unsplash.com/1600x900/?nature,water");
   width: 100%;
   height: 100%;
   background-position: top center;
   background-size: contain;
   background-repeat: no-repeat;
-}
+} 
 
 .sidebar {
   grid-area: sidebar;
@@ -35,6 +35,41 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+}
+
+.sidebar-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: hsl(265, 100%, 86%);
+  padding: 1rem;
+  position: relative;
+  transition: background-color 150ms;
+  margin-top: 5px; /* Adjust as needed */
+}
+
+.sidebar-button:hover,
+.sidebar-button:focus {
+  background-color: hsl(265, 100%, 76%);
+}
+
+.sidebar-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.sidebar-button::after {
+  content: '';
+  position: absolute;
+  width: 80%;
+  left: 10%;
+  bottom: 0;
+  height: 1px;
+  background-color: hsl(265, 100%, 46%);
+}
+
+.sidebar-button:last-child::after {
+  display: none;
 }
 
 .sidebar-item {
