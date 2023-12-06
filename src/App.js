@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Slider from './Slider'
-import SidebarItem from './SidebarItem'
-
-
+import Slider from './Slider';
+import SidebarItem from './SidebarItem';
+import HelpPage from './HelpPage';
+import LandingPage from './LandingPage';
+import Menu from './Menu';
 
 const DEFAULT_OPTIONS = [
   {
@@ -144,36 +146,62 @@ function App() {
   }
 
   return (
-    <div className="container">
-      <div className="main-image" style={getImageStyle()} />
-      <div className="sidebar">
-        {options.map((option, index) => (
-          <SidebarItem
-            key={index}
-            name={option.name}
-            active={index === selectedOptionIndex}
-            handleClick={() => setSelectedOptionIndex(index)}
+    <Router>
+      <div>
+        <Menu /> {/* Use the Menu component here */}
+        <Routes>
+          <Route
+            path="/app"
+            element={
+              <div className="container">
+                <div className="main-image" style={getImageStyle()} />
+                <div className="sidebar">
+                  {options.map((option, index) => (
+                    <SidebarItem
+                      key={index}
+                      name={option.name}
+                      active={index === selectedOptionIndex}
+                      handleClick={() => setSelectedOptionIndex(index)}
+                    />
+                  ))}
+                  <div className="buttons">
+                    <button
+                      className="sidebar-button"
+                      onClick={handleUndo}
+                      disabled={historyIndex <= 0}
+                    >
+                      Undo
+                    </button>
+                    <button
+                      className="sidebar-button"
+                      onClick={handleRedo}
+                      disabled={historyIndex >= history.length - 1}
+                    >
+                      Redo
+                    </button>
+                    <button
+                      className="sidebar-button"
+                      onClick={handleReset}
+                      disabled={historyIndex === -1}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+                <Slider
+                  min={options[selectedOptionIndex].range.min}
+                  max={options[selectedOptionIndex].range.max}
+                  value={options[selectedOptionIndex].value}
+                  handleChange={handleSliderChange}
+                />
+              </div>
+            }
           />
-        ))}
-        <div className="buttons">
-          <button className="sidebar-button" onClick={handleUndo} disabled={historyIndex <= 0}>
-            Undo
-          </button>
-          <button className="sidebar-button" onClick={handleRedo} disabled={historyIndex >= history.length - 1}>
-            Redo
-          </button>
-          <button className="sidebar-button" onClick={handleReset} disabled={historyIndex === -1}>
-            Reset
-          </button>
-        </div>
+          <Route path="/help" element={<HelpPage />} />
+          <Route path="/" exact element={<LandingPage />} />
+        </Routes>
       </div>
-      <Slider
-        min={options[selectedOptionIndex].range.min}
-        max={options[selectedOptionIndex].range.max}
-        value={options[selectedOptionIndex].value}
-        handleChange={handleSliderChange}
-      />
-    </div>
+    </Router>
   );
 }
 
